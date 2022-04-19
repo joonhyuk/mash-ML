@@ -7,6 +7,7 @@ class SingleLayer:
         self.w = None
         self.b = None
         self.losses = []
+        self.dev_losses = []
         self.w_history = []
         self.lr = learning_rate
         self.train_mean = None
@@ -37,7 +38,20 @@ class SingleLayer:
             # return data
         return (data - self.train_mean) / self.train_std
     
-    def fit(self, x, y, epochs = 100):
+    def update_dev_loss(self, x_dev, y_dev):
+        if x_dev is None:
+            return
+        if self.auto_scaling:
+            x_dev = self.scale_data(x_dev)
+        dev_loss = 0
+        for i in range(len(x_dev)):
+            z = self.forpass(x_dev[i])
+            a = self.activation(z)
+            a = np.clip(a, 1e-10, 1-1e-10)
+            dev_loss += -(y_dev[i] * np.log(a) + (1 - y_dev[i]) * np.log(1 - a))    # 각 에포크에서 평균 손실을 구하기 위해 다 더해줌
+        self.dev_losses.append(dev_loss / len(y_dev))
+    
+    def fit(self, x, y, epochs = 100, x_dev = None, y_dev = None):
         if self.auto_scaling:
             x = self.scale_data(x, force = True)
         self.w = np.ones(x.shape[1])
@@ -61,6 +75,7 @@ class SingleLayer:
                 
                 loss += -(y[i] * np.log(a) + (1 - y[i]) * np.log(1 - a))    # 각 에포크에서 평균 손실을 구하기 위해 다 더해줌
             self.losses.append(loss / len(y))
+            self.update_dev_loss(x_dev, y_dev)
     
     def predict(self, x):
         z = [self.forpass(x_i) for x_i in x]
