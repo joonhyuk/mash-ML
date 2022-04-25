@@ -13,7 +13,7 @@ class SingleLayer:
         self.train_mean = None
         self.train_std = None
         self.auto_scaling = auto_scaling
-    
+        
     def forpass(self, x):
         z = np.sum(x * self.w) + self.b
         return z
@@ -27,6 +27,7 @@ class SingleLayer:
         return np.c_[np.ones((x.shape[0], 1)), x]   # 텐서의 맨 앞에 1로 채워진 열 벡터를 추가한다.
     
     def activation(self, z):
+        z = np.clip(z, -100, None)  # 안전한 np.exp() 계산을 위해 클리핑
         a = 1 / (1 + np.exp(-z))
         return a
     
@@ -67,7 +68,7 @@ class SingleLayer:
                 a = self.activation(z)
                 err = - (y[i] - a)
                 w_grad, b_grad = self.backprop(x[i], err)
-                self.w -= w_grad
+                self.w -= self.lr * w_grad
                 self.b -= b_grad
                 
                 self.w_history.append(self.w.copy())
