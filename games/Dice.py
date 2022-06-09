@@ -1,5 +1,6 @@
 import random
 
+
 class Dice:
     def __init__(self, faces = range(1, 7)) -> None:
         self.face = None
@@ -36,3 +37,13 @@ class Dice:
 if __name__ == '__main__':
     d = Dice({'k1':1, 'k2':2})
     print(d.roll())
+    d2 = Dice()
+    # print(d2.roll())
+    import numpy as np
+    res = []
+    
+    for _ in range(1000000):
+        # res += d2.roll()
+        res.append(d2.roll())
+    
+    print(np.mean(res), np.std(res), res.count(1), res.count(2), res.count(3), res.count(4), res.count(5), res.count(6))
