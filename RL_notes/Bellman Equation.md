@@ -85,6 +85,7 @@ v_\pi (s) &= \sum_{a \in A} \pi(a|s) q_\pi(s,a)\\
 v_*(s) &= \max_a q_*(s,a)\\
 \end{aligned}
 $$
+
 - 상태 $s$의 최적 밸류는 $s$에서 선택 가능한 액션들 중 **밸류가 가장 높은 액션**의 밸류와 같다.
 	- 이미 확정적으로 가장 가치있는 액션을 알고 있으므로 액션 확률 분포 $\pi(a|s)$를 따지는 것은 의미가 없음
 
@@ -94,6 +95,7 @@ q_\pi (s, a)&= r^a_s + \gamma \sum_{s' \in S} P^a_{ss'} v_\pi(s')\\
 q_* (s, a)&= r^a_s + \gamma \sum_{s' \in S} P^a_{ss'} v_*(s')\\
 \end{aligned}
 $$
+
 - 벨만 기대 방정식과 같다. 최적 밸류를 내는 정책을 쓰는 것만 다르다.
 
 $$
@@ -102,6 +104,7 @@ v_\pi (s) &= \sum_{a \in A} \pi(a|s) \left( r^a_s + \gamma \sum_{s' \in S} P^a_{
 v_* (s) &= \max_a \left[ r^a_s + \gamma \sum_{s' \in S} P^a_{ss'} v_*(s') \right]\\
 \end{aligned}
 $$
+
 $$
 \begin{aligned}
 q_\pi (s, a)&= r^a_s + \gamma \sum_{s' \in S} P^a_{ss'} \sum_{a' \in A} \pi(a'|s') q_\pi(s',a')\\
