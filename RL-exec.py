@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import time
+import copy
 
 from tools import *
 
@@ -140,7 +141,32 @@ def main_MC_incremental_update(ep_num = None):
             
     for row in env.stage:
         print(row)
+
+def main_MC_multithreading(ep_num = 16):
+    '''just for fun :)'''
+    env = GridWorld()
+    agent = Agent()
+    gamma = 1.0
+    reward = -1.0
+    alpha = 0.001
     
+
+def MC_run_each_episode(env:GridWorld, agent:Agent, reward=-1, gamma=1, alpha=0.001):
+    done = False
+    env = copy.deepcopy(env)
+    history = []
+    while not done:
+        action = agent.select_action()
+        (x, y), reward, done = env.step(action)
+        history.append((x, y, reward))
+    
+    #if done
+    env.reset()
+    total_reward = 0
+    for transition in history[::-1]:
+        x, y, reward = transition
+        env.stage[x][y] += alpha * (total_reward - env.stage[x][y])
+
 def main_TD(ep_num = None):
     env = GridWorld()
     agent = Agent()
