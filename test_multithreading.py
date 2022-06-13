@@ -1,8 +1,6 @@
 import math
 from multiprocessing import Process, Queue, cpu_count
 import time
-import math
-
 
 NUM_THREADS = cpu_count()
 START, END = 1, 100000000
