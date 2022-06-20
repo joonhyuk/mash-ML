@@ -22,7 +22,7 @@ def check_rnd(rnd:float):
     return random.random < rnd
 
 def get_random_action():
-    return RANDOM_MOVE.roll()
+    return RANDOM_MOVE.new_face
 
 def get_win_action(target:int):
     ''' return winning move aginst target move '''
